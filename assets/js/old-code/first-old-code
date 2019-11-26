@@ -1,0 +1,101 @@
+console.log('it works!');
+
+var app = (function() {
+ 
+    const app = document.getElementById('app');
+
+
+    const questionAnswerObj = [
+        {
+            question: "What is the actors name played on Disney Channel movie - Holes?",
+            answer: "Shia Labeouf"
+        },
+        {
+            question: "Television show based on a hipster haven and west coast city",
+            answer: "Portlandia"
+        },
+        {
+            question: "A chillwave musician known for his 80s cassette tape sound",
+            answer: "Neon Indian"
+        },
+        {
+            question: "A overpriced grocery chain",
+            answer: "Whole Foods"
+        },
+        {
+            question: "A glasses company known for it's association pop culture ",
+            answer: "RayBans"
+        }
+    ]
+
+
+    // function letterSplit(word){
+    //     let wordSplit = word.split("");
+    //     let newLetterArr = []
+    //     newLetterArr = wordSplit;
+    //     return newLetterArr;
+    // }
+
+    // function removeBtn(){
+    //     gameBtn.style.display = "none";
+    // }
+
+
+     
+
+
+
+
+    // function createHiddenAnswer(answerLetters){
+    //     const str = answerLetters.toString();
+    //     // console.log(userSelect());
+    //     //create array with shown letters to compare during user keypress
+    //     const referenceArr = answerLetters;   
+
+    //     const hiddenAnswer = str.replace(/[a-z]/gi,'_');
+    //     hiddenAnswer.split();
+    //     console.log(referenceArr);
+    //      return hiddenAnswer
+    // }
+
+
+    
+
+    // render set
+    function renderSet(){
+        for (let i = 0; i < questionAnswerObj.length; i++) {
+            const element = questionAnswerObj[i];
+
+            console.log(element);
+        }
+    }
+
+
+    function update(){
+
+    }
+
+    //start game 
+    function startGame(){
+       
+        // app.innerHTML = renderSet().question;
+        renderS();
+        document.addEventListener('keyup', function(event){
+            userKey = event.key;
+            
+            console.log(userKey);
+            return userKey;
+        }); 
+    }
+
+
+
+    function render(){
+        startGame();
+    }
+
+    render();
+
+    
+    
+})();
