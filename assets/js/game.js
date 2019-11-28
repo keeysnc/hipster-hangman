@@ -30,6 +30,17 @@ var app = (function() {
     root.prepend(scoreboard);
     scoreboard.setAttribute('class','scoreboard');
 
+    var usedkeyContainer = document.createElement('div');
+    root.appendChild(usedkeyContainer);
+    usedkeyContainer.setAttribute('class','usedkeys');
+    
+
+    var resetBtn = document.createElement('button');
+    resetBtn.setAttribute('class','resetBtn');
+    resetBtn.style.display = "none";
+    resetBtn.innerHTML = "Reset";
+    root.appendChild(resetBtn);
+
     // array of question/answer sets
     var questionAnswerObj = [
         {
@@ -75,69 +86,63 @@ var app = (function() {
             }
             hideArr.push(element.innerHTML = "_");
         }
-        answerContainer.innerHTML = '<h3>' + hideArr + '</h3>'
-
+        answerContainer.innerHTML = '<h3>' + hideArr + '</h3>'    
         userloop(answer);
     }
 
     function userloop(answer){
-        
         answer = answer.split("");
         document.addEventListener('keyup', function(event){
-            userkey = event.key;
-            
-            var letterIndexArr = answer.reduce(    
-                function(accumulator, currentValue, currentIndex){
-                    charIndexArr = [];
-                    if(userkey === currentValue){
-                        usedkey.push(currentValue); 
-                        charIndexArr.push(currentIndex);
-                        hideArr.splice(currentIndex, charIndexArr.length, currentValue);
-                    }
-                    // if(usedkey.includes(currentValue)){
-                    //     console.log('stop');
-                    //     return;
-                    // }
-                },0
-            );
+            if(event.keyCode >= 65 && event.keyCode <= 90){
+                if( guesses <= 0){
+                    return 
+                }else{
+                    userkey = event.key; 
+                }
+                
+                var letterIndexArr = answer.reduce(  
+                    function(accumulator, currentValue, currentIndex){
+                        charIndexArr = [];
+                        if(userkey === currentValue){
+                            usedkey.push(currentValue); 
+                            charIndexArr.push(currentIndex);
+                            return hideArr.splice(currentIndex, charIndexArr.length, currentValue);
+                        }
+                    },0
+                );
+                
+            }
+            if(!answer.includes(userkey)){
+                if(wrongGuesses.includes(userkey)){
+                    return;
+                }else{
+                    wrongGuesses.push(userkey);
+                    guesses--;
+                    return updates();
+                }  
+            }
             return answerContainer.innerHTML = '<h3>' + hideArr + '</h3>'
+            
         });
-        
     }
         
-            //         const referenceArr = answerLetters;  
-            //         let charIndexArr = [];
-            //         let charIndex;
-            //         userKey = event.key;
-            //         //loop through reference array
-            //         //foreach element in the array run an if conditional
-            //         //if userkey is equal to the indexed element 
-            //         //get that all instances of that elements index number and push it to a new array
-            //         referenceArr.forEach(function(element) {
-            //             element.toUpperCase();
-            //             if(userKey === element){
-            //                 charIndex = referenceArr.indexOf(element);
-            //                 // while (charIndex != -1) {
-            //                 //     charIndexArr.push(charIndex);
-            //                 //     charIndex = referenceArr.indexOf(element, charIndex + 1);
-            //                 // }
-            //                 console.log(charIndexArr);
-            //                 return charIndexArr;        
-            //             }
-            //         });
-            //         //   console.log('characterIndexArray: ' + charIndexArr);
-            //         charIndexArr.forEach(el => {
-            //         updatedAnswer = hiddenAnswer.splice(el,charIndexArr.length,userKey);
-            //         // console.log(updatedAnswer);
-            //         });
-            //     });  
-
-        
-
 
     function updates(){
-        
+        if(guesses === 0){
+            scoreboard.innerHTML = "<p>Guesses: " + "Sorry you've lost" + "<p>"
+            answerContainer.innerHTML = '<h3>' + questionAnswerObj[questionSelect].answer + '</h3>'
+            
+            resetBtn.style.display = "block";
+            resetBtn.addEventListener('click',function(){
+                window.location.reload(true);
+            })  
+            return;
+        }else{
+            scoreboard.innerHTML = "<p>Guesses: " + guesses + "<p>"
+            usedkeyContainer.innerHTML = '<h3>' + wrongGuesses + '</h3>'
+        }
     }
+
 
     function render(){
         init();
