@@ -94,6 +94,7 @@ var app = (function() {
         answer = answer.split("");
         document.addEventListener('keyup', function(event){
             if(event.keyCode >= 65 && event.keyCode <= 90){
+                //if guess is zero stop game
                 if( guesses <= 0){
                     return 
                 }else{
@@ -106,7 +107,8 @@ var app = (function() {
                         if(userkey === currentValue){
                             usedkey.push(currentValue); 
                             charIndexArr.push(currentIndex);
-                            return hideArr.splice(currentIndex, charIndexArr.length, currentValue);
+                            hideArr.splice(currentIndex, charIndexArr.length, currentValue);
+                            return updates();
                         }
                     },0
                 );
@@ -117,7 +119,9 @@ var app = (function() {
                     return;
                 }else{
                     wrongGuesses.push(userkey);
-                    guesses--;
+                    if(hideArr.includes("_")){
+                        guesses--;
+                    }
                     return updates();
                 }  
             }
@@ -137,6 +141,12 @@ var app = (function() {
                 window.location.reload(true);
             })  
             return;
+        }else if(!hideArr.includes("_") ){
+                scoreboard.innerHTML = "<p>Guesses: " + "You Win!" + "<p>";
+                resetBtn.style.display = "block";
+                resetBtn.addEventListener('click',function(){
+                window.location.reload(true);
+            })
         }else{
             scoreboard.innerHTML = "<p>Guesses: " + guesses + "<p>"
             usedkeyContainer.innerHTML = '<h3>' + wrongGuesses + '</h3>'
